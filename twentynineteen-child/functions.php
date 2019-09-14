@@ -39,8 +39,6 @@ function child_choose_sizes( $sizes ) {
 
 
 
-add_action( 'template_redirect', 'members_only' );
-
 
 add_image_size( 'larger_square', 1100, 1100, true );
 
