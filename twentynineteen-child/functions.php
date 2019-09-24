@@ -14,6 +14,7 @@ function my_theme_enqueue_styles() {
 }
 
 add_action( 'after_setup_theme', 'wpse_setup_theme' );
+// after_setup_theme, Hook
 function wpse_setup_theme() {
     add_theme_support( 'post-thumbnails' );
     add_image_size( 'large_square', 1000, 1000, true );
@@ -38,8 +39,30 @@ function child_choose_sizes( $sizes ) {
 }
 
 
+if(is_page('super-secret') && ! is_user_logged_in() ) {
+    // is_page, conditional tag
+    // is_user_logged_in, conditional tag
+
+}
+
+// add_image_size( 'larger_square', 1100, 1100, true );
 
 
-add_image_size( 'larger_square', 1100, 1100, true );
+<?php
+/*
+Register Tutorial custom post type
+*/
+
+function register_tutorials_post_type( ) {
+    $args = array(
+      'public' => true,
+      'menu_position' => 20,
+      'label'  => 'Restaurant Reviews'
+    );
+    register_post_type( 'restaurant_review', $args );
+}
+add_action( 'init', 'wpshout_register_restaurant_reviews' );
+
+
 
 ?>
