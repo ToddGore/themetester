@@ -39,30 +39,127 @@ function child_choose_sizes( $sizes ) {
 }
 
 
-if(is_page('super-secret') && ! is_user_logged_in() ) {
-    // is_page, conditional tag
-    // is_user_logged_in, conditional tag
-
-}
-
-// add_image_size( 'larger_square', 1100, 1100, true );
-
-
-<?php
 /*
 Register Tutorial custom post type
 */
-
-function register_tutorials_post_type( ) {
-    $args = array(
-      'public' => true,
-      'menu_position' => 20,
-      'label'  => 'Restaurant Reviews'
+function register_tutorials_post_type() {
+    $labels = array(
+        'name' => 'Tutorials',
+        'singular_name' => 'Tutorial',
+        'add_new' => 'Add Item',
+        'all_items' => 'All Items',
+        'add_new_item' => 'Add Item',
+        'edit_item' => 'Edit Item',
+        'new_item' => 'New Item',
+        'view_item' => 'View Item',
+        'not_found' => 'No Items Found',
+        'parent_item_colon' => 'Parent Item'
     );
-    register_post_type( 'restaurant_review', $args );
-}
-add_action( 'init', 'wpshout_register_restaurant_reviews' );
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        // https://wordpress.stackexchange.com/questions/156978/custom-post-type-single-page-returns-404-error
+        'menu_position' => 20,
+        'has_archive' => true,
+        'rewrite' => true,
+        'capability_type' => 'post',
+        'hierarchical' => true,
+        'support' => array(
+            'title',
+            'editor',
+            'excerpt',
+            'thumbnail',
+            'revisions',
+        )
 
+    );
+    register_post_type( 'Tutorials', $args );
+}
+add_action( 'init', 'register_tutorials_post_type' );
+
+
+/*
+Plugin Name: Register Difficulty Taxonomy
+*/
+function register_difficulty_taxonomy() {
+    $args = array( 
+        'hierarchical' => true,
+        'label' => 'Difficulty',
+    );
+    register_taxonomy( 'difficulty', 'tutorials', $args );
+}
+add_action( 'init', 'register_difficulty_taxonomy' );
+
+
+/*
+Plugin Name: Register difficulty Taxonomy Terms
+*/
+function register_difficulty_terms( ) {
+	wp_insert_term( 'Beginner', 'difficulty', $args = array(
+		'description' => 'Beginner Difficulty'
+	) );
+	
+	wp_insert_term( 'Intermediate', 'difficulty', $args = array(
+		'description' => 'Medium Difficulty'
+    ) );
+    
+    wp_insert_term( 'Advanced', 'difficulty', $args = array(
+		'description' => 'High Difficulty'
+	) );
+}
+add_action( 'init', 'register_difficulty_terms' );
+
+
+/*
+Plugin Name: Register topics Taxonomy
+*/
+function register_topics_taxonomy() {
+    $args = array( 
+        'hierarchical' => false,
+        'label' => 'Topics',
+    );
+    register_taxonomy( 'topics', 'tutorials', $args );
+}
+add_action( 'init', 'register_topics_taxonomy' );
+
+/*
+Plugin Name: Register topics Taxonomy Terms
+*/
+function register_topics_terms( ) {
+	wp_insert_term( 'JavaScript', 'topics', $args = array(
+		'description' => 'JavaScript Language'
+	) );
+	
+	wp_insert_term( 'PHP', 'topics', $args = array(
+		'description' => 'PHP Language'
+    ) );
+    
+    wp_insert_term( 'Workflows', 'topics', $args = array(
+		'description' => 'Workflows'
+	) );
+}
+add_action( 'init', 'register_topics_terms' );
+
+
+
+// TO DO
+// Custom post type "Tutorial"
+//   has: archive, 
+
+//  Custom post template
+// use template hierarchy, template parts
+//   no: author, publication date
+//   show: difficulty, List of Topics
+
+// Custom taxonomy
+// Difficulty: Beginner, Intermediate, Advanced
+// Topics: Like tags, JavaScript, PHP, Workflows
+
+// Custom properties
+// Minutes: "6 minutes," "20 minutes," "40 minutes,"
+
+// Archive page should only show
+//   Title, Difficulty, Topics, Minutes
 
 
 ?>
