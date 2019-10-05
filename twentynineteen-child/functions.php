@@ -140,7 +140,18 @@ function register_topics_terms( ) {
 }
 add_action( 'init', 'register_topics_terms' );
 
+// Custom field
+function weather_custom_field( $content ) {
+	$fave_weather = get_post_meta( get_the_ID(), 'weather_field', true );
+	
+	if( empty( $fave_weather ) ) {
+		return $content;
+	}
 
+	$fave_weather_string = '<em>The current weather is: ' . $fave_weather . '</em><hr>';
+	return $fave_weather_string . $content;
+}
+add_filter( 'the_content', 'weather_custom_field' );
 
 // TO DO
 // Custom post type "Tutorial"
@@ -160,6 +171,29 @@ add_action( 'init', 'register_topics_terms' );
 
 // Archive page should only show
 //   Title, Difficulty, Topics, Minutes
+
+
+
+// Custom sidebar
+function theme_slug_widgets_init() {
+	$args = array(
+	    'name'          => 'Widgetized Sidebar',
+	    'id'            => "widgetized-sidebar",
+	    'description'   => 'Our Widgetized Sidebar',
+	    'class'         => '',
+	    'before_widget' => '<li id="%1$s" class="widget %2$s">',
+	    'after_widget'  => "</li>\n",
+	    'before_title'  => '<h2 class="widgettitle">',
+	    'after_title'   => "</h2>",
+	);
+	register_sidebar( $args );
+}
+add_action( 'widgets_init', 'theme_slug_widgets_init' );
+
+
+
+
+
 
 
 ?>
